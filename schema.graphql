@@ -1,0 +1,94 @@
+
+
+type Post implements Node{
+	"""
+	Post content
+	"""
+	content: String
+	"""
+	Date it was created in DB
+	"""
+	createdAt: String!
+}
+
+"""
+A monospace user with its own mono space containing walls of content
+"""
+type User implements Node{
+	"""
+	Wall of user posts
+	"""
+	wall: [Post!]!
+	"""
+	Date it was created in DB
+	"""
+	createdAt: String!
+	"""
+	Unique username that will be also a part of link for example https://username.imono.space
+	"""
+	username: String!
+}
+
+"""
+Node that all models should implement
+"""
+interface Node{
+	"""
+	Date it was created in DB
+	"""
+	createdAt: String!
+}
+
+type UserMutation{
+	post(
+		postCreate: PostCreate!
+	): String!
+	setUsername(
+		usernameSet: UsernameSet!
+	): Boolean
+}
+
+input PostCreate{
+	content: String!
+}
+
+type Query{
+	getUserByUsername(
+		userGet: UserGet!
+	): User
+	me: User!
+}
+
+type Mutation{
+	"""
+	Mutations only allowed inside user scope
+	"""
+	userMutation: UserMutation
+	login(
+		loginInput: LoginInput!
+	): String
+	validate(
+		otpInput: OtpInput!
+	): String
+}
+
+input UserGet{
+	username: String!
+}
+
+input LoginInput{
+	phoneNumber: String!
+}
+
+input OtpInput{
+	phoneNumber: String!
+	code: String!
+}
+
+input UsernameSet{
+	username: String!
+}
+schema{
+	query: Query,
+	mutation: Mutation
+}

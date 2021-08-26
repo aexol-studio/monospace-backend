@@ -1,0 +1,13 @@
+{
+    "system": "backend",
+    "namespace": "stack-of-the-future",
+    "project": "monospace",
+    "version": "latest",
+    "typingsEnv": "node",
+    "typingsGen": "TypeScript",
+    "typingsHost": "http://localhost:8080/",
+    "typingsDir": "./src",
+    "backendSrc": "./src",
+    "backendLib": "./lib",
+    "schemaDir": "./"
+}

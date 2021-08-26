@@ -1,0 +1,44 @@
+{
+    "resolvers": {
+        "Query.getUserByUsername": {
+            "resolve": {
+                "name": "lib/Query/getUserByUsername"
+            }
+        },
+        "Mutation.validate": {
+            "resolve": {
+                "name": "lib/Mutation/validate"
+            }
+        },
+        "Mutation.login": {
+            "resolve": {
+                "name": "lib/Mutation/login"
+            }
+        },
+        "UserMutation.post": {
+            "resolve": {
+                "name": "lib/UserMutation/post"
+            }
+        },
+        "UserMutation.setUsername": {
+            "resolve": {
+                "name": "lib/UserMutation/setUsername"
+            }
+        },
+        "Mutation.userMutation": {
+            "resolve": {
+                "name": "lib/Mutation/userMutation"
+            }
+        },
+        "User.wall": {
+            "resolve": {
+                "name": "lib/User/wall"
+            }
+        },
+        "Query.me": {
+            "resolve": {
+                "name": "lib/Query/me"
+            }
+        }
+    }
+}
