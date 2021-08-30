@@ -21,8 +21,11 @@ const getS3links = async ({
   getUrl: string;
 }> =>
   new Promise((resolve) => {
+    if (!process.env.SPACES_BUCKET) {
+      throw new Error('Please specify SPACES_BUCKET environment variable');
+    }
     const params = {
-      Bucket: 'mono',
+      Bucket: process.env.SPACES_BUCKET,
     };
     s3.createBucket(params, function (err, data) {
       if (err) {
@@ -46,6 +49,5 @@ const getS3links = async ({
 
 export const handler = async (input: FieldResolveInput) =>
   resolverFor('UserMutation', 'uploadFiles', async (args) => {
-    const links = await Promise.all(args.files.map(getS3links));
-    return links;
+    return Promise.all(args.files.map(getS3links));
   })(input.arguments);
