@@ -30,7 +30,6 @@ export type ValueTypes = {
 }>;
 	["UserMutation"]: AliasType<{
 post?: [{	postCreate:ValueTypes["PostCreate"]},true],
-setUsername?: [{	usernameSet:ValueTypes["UsernameSet"]},true],
 		__typename?: true
 }>;
 	["PostCreate"]: {
@@ -52,14 +51,12 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 	username:string
 };
 	["LoginInput"]: {
-	phoneNumber:string
+	phoneNumber:string,
+	username:string
 };
 	["OtpInput"]: {
 	phoneNumber:string,
 	code:string
-};
-	["UsernameSet"]: {
-	username:string
 }
   }
 
@@ -82,8 +79,7 @@ export type ModelTypes = {
 	/** Node that all models should implement */
 ["Node"]: ModelTypes["Post"] | ModelTypes["User"];
 	["UserMutation"]: {
-		post:string,
-	setUsername?:boolean
+		post:string
 };
 	["PostCreate"]: GraphQLTypes["PostCreate"];
 	["Query"]: {
@@ -98,8 +94,7 @@ export type ModelTypes = {
 };
 	["UserGet"]: GraphQLTypes["UserGet"];
 	["LoginInput"]: GraphQLTypes["LoginInput"];
-	["OtpInput"]: GraphQLTypes["OtpInput"];
-	["UsernameSet"]: GraphQLTypes["UsernameSet"]
+	["OtpInput"]: GraphQLTypes["OtpInput"]
     }
 
 export type GraphQLTypes = {
@@ -130,8 +125,7 @@ export type GraphQLTypes = {
 };
 	["UserMutation"]: {
 	__typename: "UserMutation",
-	post: string,
-	setUsername?: boolean
+	post: string
 };
 	["PostCreate"]: {
 		content: string
@@ -152,14 +146,12 @@ export type GraphQLTypes = {
 		username: string
 };
 	["LoginInput"]: {
-		phoneNumber: string
+		phoneNumber: string,
+	username: string
 };
 	["OtpInput"]: {
 		phoneNumber: string,
 	code: string
-};
-	["UsernameSet"]: {
-		username: string
 }
     }
 

@@ -7,14 +7,6 @@ export const AllTypesProps: Record<string,any> = {
 				arrayRequired:false,
 				required:true
 			}
-		},
-		setUsername:{
-			usernameSet:{
-				type:"UsernameSet",
-				array:false,
-				arrayRequired:false,
-				required:true
-			}
 		}
 	},
 	PostCreate:{
@@ -67,6 +59,12 @@ export const AllTypesProps: Record<string,any> = {
 			array:false,
 			arrayRequired:false,
 			required:true
+		},
+		username:{
+			type:"String",
+			array:false,
+			arrayRequired:false,
+			required:true
 		}
 	},
 	OtpInput:{
@@ -77,14 +75,6 @@ export const AllTypesProps: Record<string,any> = {
 			required:true
 		},
 		code:{
-			type:"String",
-			array:false,
-			arrayRequired:false,
-			required:true
-		}
-	},
-	UsernameSet:{
-		username:{
 			type:"String",
 			array:false,
 			arrayRequired:false,
@@ -109,8 +99,7 @@ export const ReturnTypes: Record<string,any> = {
 		createdAt:"String"
 	},
 	UserMutation:{
-		post:"String",
-		setUsername:"Boolean"
+		post:"String"
 	},
 	Query:{
 		getUserByUsername:"User",

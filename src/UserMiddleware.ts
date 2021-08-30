@@ -19,7 +19,7 @@ const decodeToken = (token: string) => {
 
 export const getUser = async (token: string): Promise<UserModel | undefined> => {
   const { db } = await mc();
-  const col = await db.collection<UserModel>('User');
+  const col = await db.collection<UserModel>('UserCol');
   const { phoneNumber } = decodeToken(token);
   const user = await col.findOne({
     phoneNumber,

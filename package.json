@@ -7,7 +7,9 @@
     "start": "dotenv -e .env stucco",
     "build": "tsc",
     "watch": "tsc --watch",
-    "cli": "gecli"
+    "test-cli": "dotenv -e .env -- node ../../lib/index.js",
+    "cli": "gecli",
+    "update": "gecli models && gecli schema && gecli typings"
   },
   "author": "GraphQL Editor Centaur Generator",
   "license": "ISC",
@@ -22,7 +24,7 @@
     "eslint": "^6.7.1",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "graphql-editor-cli": "^0.1.0",
+    "graphql-editor-cli": "^0.1.5",
     "graphql-zeus": "latest",
     "prettier": "latest",
     "ts-node": "latest",

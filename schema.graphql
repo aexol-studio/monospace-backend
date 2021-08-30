@@ -43,9 +43,6 @@ type UserMutation{
 	post(
 		postCreate: PostCreate!
 	): String!
-	setUsername(
-		usernameSet: UsernameSet!
-	): Boolean
 }
 
 input PostCreate{
@@ -78,15 +75,12 @@ input UserGet{
 
 input LoginInput{
 	phoneNumber: String!
+	username: String!
 }
 
 input OtpInput{
 	phoneNumber: String!
 	code: String!
-}
-
-input UsernameSet{
-	username: String!
 }
 schema{
 	query: Query,

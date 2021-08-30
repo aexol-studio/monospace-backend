@@ -14,18 +14,15 @@ export const handler = async (input: FieldResolveInput) =>
     if (args.loginInput.phoneNumber !== '+48123456789') {
       //check if exists
       const { db } = await mc();
-      const userCollection = db.collection<UserModel>('User');
-      const theUser = await userCollection.findOneAndUpdate(
-        { phoneNumber: args.loginInput.phoneNumber },
-        {
-          $setOnInsert: {
-            createdAt: new Date().toISOString(),
-            phoneNumber: args.loginInput.phoneNumber,
-          },
-        },
-      );
+      const userCollection = db.collection<UserModel>('UserCol');
+      const theUser = await userCollection.findOne({ phoneNumber: args.loginInput.phoneNumber });
       if (!theUser) {
-        throw new Error('No user with inserted number in database!');
+        await userCollection.insertOne({
+          createdAt: new Date().toISOString(),
+          phoneNumber: args.loginInput.phoneNumber,
+          username: args.loginInput.username,
+          wall: [],
+        });
       }
       //send otp
       const result = await twilio.verify

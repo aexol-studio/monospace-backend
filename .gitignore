@@ -3,3 +3,4 @@
 /node_modules
 .graphql-editor-auth.json
 dist
+.deploy.sh

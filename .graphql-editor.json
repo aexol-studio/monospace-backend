@@ -9,5 +9,6 @@
     "typingsDir": "./src",
     "backendSrc": "./src",
     "backendLib": "./lib",
-    "schemaDir": "./"
+    "schemaDir": "./",
+    "backendZip": "https://github.com/aexol-studio/monospace-backend/archive/refs/heads/main.zip"
 }
