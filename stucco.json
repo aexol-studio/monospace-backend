@@ -1,39 +1,44 @@
 {
-  "resolvers": {
-    "Query.getUserByUsername": {
-      "resolve": {
-        "name": "lib/Query/getUserByUsername"
-      }
-    },
-    "Mutation.validate": {
-      "resolve": {
-        "name": "lib/Mutation/validate"
-      }
-    },
-    "Mutation.login": {
-      "resolve": {
-        "name": "lib/Mutation/login"
-      }
-    },
-    "UserMutation.post": {
-      "resolve": {
-        "name": "lib/UserMutation/post"
-      }
-    },
-    "Mutation.userMutation": {
-      "resolve": {
-        "name": "lib/Mutation/userMutation"
-      }
-    },
-    "User.wall": {
-      "resolve": {
-        "name": "lib/User/wall"
-      }
-    },
-    "Query.me": {
-      "resolve": {
-        "name": "lib/Query/me"
-      }
+    "resolvers": {
+        "Query.getUserByUsername": {
+            "resolve": {
+                "name": "lib/Query/getUserByUsername"
+            }
+        },
+        "Mutation.validate": {
+            "resolve": {
+                "name": "lib/Mutation/validate"
+            }
+        },
+        "Mutation.login": {
+            "resolve": {
+                "name": "lib/Mutation/login"
+            }
+        },
+        "UserMutation.post": {
+            "resolve": {
+                "name": "lib/UserMutation/post"
+            }
+        },
+        "Mutation.userMutation": {
+            "resolve": {
+                "name": "lib/Mutation/userMutation"
+            }
+        },
+        "User.wall": {
+            "resolve": {
+                "name": "lib/User/wall"
+            }
+        },
+        "Query.me": {
+            "resolve": {
+                "name": "lib/Query/me"
+            }
+        },
+        "UserMutation.uploadFiles": {
+            "resolve": {
+                "name": "lib/UserMutation/uploadFiles"
+            }
+        }
     }
-  }
 }

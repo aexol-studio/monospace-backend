@@ -3,6 +3,7 @@ import { UserModel } from './UserModel'
 import { UserMutationModel } from './UserMutationModel'
 import { QueryModel } from './QueryModel'
 import { MutationModel } from './MutationModel'
+import { UploadRequestResponseModel } from './UploadRequestResponseModel'
 
 
 export type Models = {
@@ -11,4 +12,5 @@ export type Models = {
 	UserMutationModel: UserMutationModel;
 	QueryModel: QueryModel;
 	MutationModel: MutationModel;
+	UploadRequestResponseModel: UploadRequestResponseModel;
 };

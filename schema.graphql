@@ -43,6 +43,9 @@ type UserMutation{
 	post(
 		postCreate: PostCreate!
 	): String!
+	uploadFiles(
+		files: [File!]! = []
+	): [UploadRequestResponse!]!
 }
 
 input PostCreate{
@@ -81,6 +84,16 @@ input LoginInput{
 input OtpInput{
 	phoneNumber: String!
 	code: String!
+}
+
+input File{
+	name: String!
+	type: String!
+}
+
+type UploadRequestResponse{
+	getUrl: String!
+	putUrl: String!
 }
 schema{
 	query: Query,

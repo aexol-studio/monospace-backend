@@ -31,6 +31,7 @@
     "typescript": "latest"
   },
   "dependencies": {
+    "aws-sdk": "^2.978.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.1.1",
     "node-fetch": "^2.6.0",

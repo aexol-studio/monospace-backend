@@ -7,5 +7,5 @@ import { resolverFor } from '../zeus';
 export const handler = async (input: FieldResolveInput) =>
   resolverFor('User', 'wall', async (args, source: UserModel) => {
     const m = await mc();
-    return m.db.collection<PostModel>('PostModel').find({ username: source.username }).toArray();
+    return m.db.collection<PostModel>('Post').find({ username: source.username }).toArray();
   })(input.arguments, input.source);

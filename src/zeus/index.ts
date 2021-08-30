@@ -30,6 +30,7 @@ export type ValueTypes = {
 }>;
 	["UserMutation"]: AliasType<{
 post?: [{	postCreate:ValueTypes["PostCreate"]},true],
+uploadFiles?: [{	files:ValueTypes["File"][]},ValueTypes["UploadRequestResponse"]],
 		__typename?: true
 }>;
 	["PostCreate"]: {
@@ -57,7 +58,16 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 	["OtpInput"]: {
 	phoneNumber:string,
 	code:string
-}
+};
+	["File"]: {
+	name:string,
+	type:string
+};
+	["UploadRequestResponse"]: AliasType<{
+	getUrl?:true,
+	putUrl?:true,
+		__typename?: true
+}>
   }
 
 export type ModelTypes = {
@@ -79,7 +89,8 @@ export type ModelTypes = {
 	/** Node that all models should implement */
 ["Node"]: ModelTypes["Post"] | ModelTypes["User"];
 	["UserMutation"]: {
-		post:string
+		post:string,
+	uploadFiles:ModelTypes["UploadRequestResponse"][]
 };
 	["PostCreate"]: GraphQLTypes["PostCreate"];
 	["Query"]: {
@@ -94,7 +105,12 @@ export type ModelTypes = {
 };
 	["UserGet"]: GraphQLTypes["UserGet"];
 	["LoginInput"]: GraphQLTypes["LoginInput"];
-	["OtpInput"]: GraphQLTypes["OtpInput"]
+	["OtpInput"]: GraphQLTypes["OtpInput"];
+	["File"]: GraphQLTypes["File"];
+	["UploadRequestResponse"]: {
+		getUrl:string,
+	putUrl:string
+}
     }
 
 export type GraphQLTypes = {
@@ -125,7 +141,8 @@ export type GraphQLTypes = {
 };
 	["UserMutation"]: {
 	__typename: "UserMutation",
-	post: string
+	post: string,
+	uploadFiles: Array<GraphQLTypes["UploadRequestResponse"]>
 };
 	["PostCreate"]: {
 		content: string
@@ -152,6 +169,15 @@ export type GraphQLTypes = {
 	["OtpInput"]: {
 		phoneNumber: string,
 	code: string
+};
+	["File"]: {
+		name: string,
+	type: string
+};
+	["UploadRequestResponse"]: {
+	__typename: "UploadRequestResponse",
+	getUrl: string,
+	putUrl: string
 }
     }
 
