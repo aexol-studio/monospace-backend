@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm install
       - run: |
@@ -20,4 +20,7 @@ jobs:
             -e TWILIO_ACCOUNT=$TWILIO_ACCOUNT \
             -e TWILIO_TOKEN=$TWILIO_TOKEN \
             -e TWILLIO_SERVICE_ID=$TWILLIO_SERVICE_ID \
-            -e GRAPHQL_EDITOR_TOKEN=$GRAPHQL_EDITOR_TOKEN
+            -e GRAPHQL_EDITOR_TOKEN=$GRAPHQL_EDITOR_TOKEN \
+            -e SPACES_SECRET=$SPACES_SECRET \
+            -e SPACES_KEY=$SPACES_KEY \
+            -e SPACES_BUCKET=$SPACES_BUCKET
