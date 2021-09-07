@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,10 +13,11 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm install
-      - run: >
-          npx gecli deploy 
-            -e MONGO_URL=$MONGO_URL 
-            -e JWT_SECRET=$JWT_SECRET
-            -e TWILIO_ACCOUNT=$TWILIO_ACCOUNT
-            -e TWILIO_TOKEN=$TWILIO_TOKEN
-            -e TWILLIO_SERVICE_ID=$TWILLIO_SERVICE_ID
+      - run: |
+          npx gecli deploy \
+            -e MONGO_URL=$MONGO_URL \
+            -e JWT_SECRET=$JWT_SECRET \
+            -e TWILIO_ACCOUNT=$TWILIO_ACCOUNT \
+            -e TWILIO_TOKEN=$TWILIO_TOKEN \
+            -e TWILLIO_SERVICE_ID=$TWILLIO_SERVICE_ID \
+            -e GRAPHQL_EDITOR_TOKEN=$GRAPHQL_EDITOR_TOKEN
