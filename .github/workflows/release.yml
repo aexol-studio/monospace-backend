@@ -24,3 +24,13 @@ jobs:
             -e SPACES_SECRET=$SPACES_SECRET 
             -e SPACES_KEY=$SPACES_KEY 
             -e SPACES_BUCKET=$SPACES_BUCKET
+        env:
+          MONGO_URL: ${{secrets.MONGO_URL}}
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
+          TWILIO_ACCOUNT: ${{secrets.TWILIO_ACCOUNT}}
+          TWILIO_TOKEN: ${{secrets.TWILIO_TOKEN}}
+          TWILIO_SERVICE_ID: ${{secrets.TWILIO_SERVICE_ID}}
+          GRAPHQL_EDITOR_TOKEN: ${{secrets.GRAPHQL_EDITOR_TOKEN}}
+          SPACES_SECRET: ${{secrets.SPACES_SECRET}}
+          SPACES_KEY: ${{secrets.SPACES_KEY}}
+          SPACES_BUCKET: ${{secrets.SPACES_BUCKET}}
