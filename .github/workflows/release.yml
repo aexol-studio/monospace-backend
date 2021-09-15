@@ -24,6 +24,7 @@ jobs:
             -e SPACES_SECRET=$SPACES_SECRET 
             -e SPACES_KEY=$SPACES_KEY 
             -e SPACES_BUCKET=$SPACES_BUCKET
+            -e SPACES_REGION=$SPACES_REGION
         env:
           MONGO_URL: ${{secrets.MONGO_URL}}
           JWT_SECRET: ${{secrets.JWT_SECRET}}
@@ -34,3 +35,4 @@ jobs:
           SPACES_SECRET: ${{secrets.SPACES_SECRET}}
           SPACES_KEY: ${{secrets.SPACES_KEY}}
           SPACES_BUCKET: ${{secrets.SPACES_BUCKET}}
+          SPACES_REGION: ${{secrets.SPACES_REGION}}
