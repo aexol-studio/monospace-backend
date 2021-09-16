@@ -1,4 +1,5 @@
 import { mc } from "../db";
+import { postMock } from "../Mock/Mock";
 import { PostModel } from "../models/PostModel";
 import { ResolverType, ValueTypes } from "../zeus";
 import { handler } from "./wall";
@@ -18,20 +19,18 @@ const wallResolver = async (/*args: ResolverType<ValueTypes['User']['wall']>*/) 
     });
 
 it('Returns list of posts written by user with specified username', async () =>{
-    // mc - mongo connection?
     const mongo = await mc();
     await mongo.db.dropDatabase();
 
     const posts: Array<PostModel> = [
         {
-            createdAt: new Date().toDateString(),
-            username: USERNAME,
+            ...postMock(),
             content: 'post-content-only-for-test',
         },
         {
-            createdAt: new Date().toDateString(),
-            username: 'different.user@email.com',
+            ...postMock(),
             content: 'should-not-be-returned',
+            username: 'different.user@email.com',
         }
     ];
 
