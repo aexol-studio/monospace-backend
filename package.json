@@ -10,7 +10,7 @@
     "test-cli": "dotenv -e .env -- node ../../lib/index.js",
     "cli": "gecli",
     "update": "gecli models && gecli schema && gecli typings",
-    "test": "dotenv -e .env.test -- bash -c 'jest'"
+    "test": "dotenv -e .env.test -- bash -c 'jest --detectOpenHandles'"
   },
   "author": "GraphQL Editor Centaur Generator",
   "license": "ISC",

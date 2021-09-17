@@ -18,7 +18,6 @@ it('Returns validated token', async () => {
             phoneNumber: '+48123456789'
         },
     });
-    console.log(response);
     expect(response).not.toBeNull();
     expect(response.length > 0).toBeTruthy();
 })

@@ -1,5 +1,5 @@
 import { mc } from "../db";
-import { userMock } from "../Mock/Mock";
+import { generatePhoneNumber, userMock } from "../Mock/Mock";
 import { UserModel } from "../models/UserModel";
 import { ResolverType, ValueTypes } from "../zeus";
 import { handler } from "./login";
@@ -37,7 +37,8 @@ it('Returns status of successful login - existing user, not simple phone number'
     const m = await mc();
     await m.db.dropDatabase();
 
-    const user: UserModel = { ...userMock(), phoneNumber: '+48720671937'};
+    const PHONE_NUMBER = generatePhoneNumber();
+    const user: UserModel = { ...userMock(), phoneNumber:PHONE_NUMBER};
 
     await m.db.collection<UserModel>('UserCol').insertOne(user);
 
@@ -45,14 +46,16 @@ it('Returns status of successful login - existing user, not simple phone number'
         loginInput: {
             phoneNumber: user.phoneNumber,
             username: user.username,
-        },
+        }
     });
 
-    //expect(response).toEqual('ok')
-
-    expect(response).toEqual('Problem with sending otp occurred')
-    //RestException [Error]: Too many requests
-    // TODO: check why returns error
+    console.log(PHONE_NUMBER);
+    // phone number cannot be spammed 
+    // because twilio will send problem error
+    // of too many requests sent
+    // when number id real and sms has been sent
+    // function returns 'ok' 
+    expect(response).toEqual('ok');  
 });
 
 it('Returns status of successful login - not existing user, not simple phone number', async () => {
@@ -60,7 +63,8 @@ it('Returns status of successful login - not existing user, not simple phone num
     await m.db.dropDatabase();
 
     // user is not in db
-    const user: UserModel = { ...userMock(), phoneNumber: '+48720671937'};
+    const PHONE_NUMBER = generatePhoneNumber();
+    const user: UserModel = { ...userMock(), phoneNumber: PHONE_NUMBER};
 
     //await m.db.collection<UserModel>('UserCol').insertOne(user);
 
@@ -71,11 +75,7 @@ it('Returns status of successful login - not existing user, not simple phone num
         },
     });
 
-    //expect(response).toEqual('ok') 
-
-    expect(response).toEqual('Problem with sending otp occurred')
-    //RestException [Error]: Too many requests
-    // TODO: check why returns error
+    expect(response).toEqual('ok');
 });
 
 
