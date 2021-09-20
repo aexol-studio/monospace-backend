@@ -5,7 +5,10 @@ type ZEUS_UNIONS = never
 export type ValueTypes = {
     ["Post"]: AliasType<{
 	/** Post content */
-	content?:true,
+	content?: {
+    content?:true,
+    image?: true
+  }
 	/** Date it was created in DB */
 	createdAt?:true,
 		__typename?: true
@@ -34,7 +37,10 @@ uploadFiles?: [{	files:ValueTypes["File"][]},ValueTypes["UploadRequestResponse"]
 		__typename?: true
 }>;
 	["PostCreate"]: {
-	content:string
+	content: {
+    content: string,
+    image?: string
+  }
 };
 	["Query"]: AliasType<{
 getUserByUsername?: [{	userGet:ValueTypes["UserGet"]},ValueTypes["User"]],
@@ -73,7 +79,10 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 export type ModelTypes = {
     ["Post"]: {
 		/** Post content */
-	content?:string,
+	content?: {
+    content?: string,
+    image?: string
+  },
 	/** Date it was created in DB */
 	createdAt:string
 };
@@ -117,7 +126,10 @@ export type GraphQLTypes = {
     ["Post"]: {
 	__typename: "Post",
 	/** Post content */
-	content?: string,
+	content?:{
+    content?: string,
+    image?: string
+  },
 	/** Date it was created in DB */
 	createdAt: string
 };
@@ -145,7 +157,10 @@ export type GraphQLTypes = {
 	uploadFiles: Array<GraphQLTypes["UploadRequestResponse"]>
 };
 	["PostCreate"]: {
-		content: string
+		content: {
+      content: string,
+      image?: string
+    }
 };
 	["Query"]: {
 	__typename: "Query",

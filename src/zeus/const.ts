@@ -18,11 +18,19 @@ export const AllTypesProps: Record<string,any> = {
 		}
 	},
 	PostCreate:{
-		content:{
-			type:"String",
-			array:false,
-			arrayRequired:false,
-			required:true
+		content:{ 
+			content:{
+				type:"String",
+				array:false,
+				arrayRequired:false,
+				required:true
+			},
+			image: {
+				type:"String",
+				array:false,
+				arrayRequired:false,
+				required:false
+			}
 		}
 	},
 	Query:{
@@ -107,7 +115,10 @@ export const AllTypesProps: Record<string,any> = {
 
 export const ReturnTypes: Record<string,any> = {
 	Post:{
-		content:"String",
+		content: {
+			content: "String",
+			image: "String"
+		},
 		createdAt:"String"
 	},
 	User:{
@@ -121,7 +132,7 @@ export const ReturnTypes: Record<string,any> = {
 		createdAt:"String"
 	},
 	UserMutation:{
-		post:"String",
+		post:"Post",
 		uploadFiles:"UploadRequestResponse"
 	},
 	Query:{

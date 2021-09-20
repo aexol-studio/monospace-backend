@@ -10,7 +10,10 @@ export const handler = async (input: FieldResolveInput) =>
     const id = await db.collection<PostModel>('Post').insertOne({
       createdAt: new Date().toISOString(),
       username: source.username,
-      content: args.postCreate.content,
+      content: {
+        content: args.postCreate.content.content,
+        image: args.postCreate.content.image,
+      },
     });
     return id.insertedId.toHexString();
   })(input.arguments, input.source);

@@ -15,7 +15,12 @@ export const handler = async (input: FieldResolveInput) =>
       //check if exists
       const { db } = await mc();
       const userCollection = db.collection<UserModel>('UserCol');
-      const theUser = await userCollection.findOne({ phoneNumber: args.loginInput.phoneNumber });
+      
+      // Now user is being found by username not phone number
+      // Can create many accounts with one phone number
+      // but cannot create many accounts with one username
+      // username should be unique
+      const theUser = await userCollection.findOne({ username: args.loginInput.username });
       if (!theUser) {
         await userCollection.insertOne({
           createdAt: new Date().toISOString(),

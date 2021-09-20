@@ -1,10 +1,13 @@
-
+type Content{
+	content: String
+	image: String
+}
 
 type Post implements Node{
 	"""
 	Post content
 	"""
-	content: String
+	content: Content
 	"""
 	Date it was created in DB
 	"""
@@ -48,8 +51,13 @@ type UserMutation{
 	): [UploadRequestResponse!]!
 }
 
-input PostCreate{
+input ContentInput{
 	content: String!
+	image: String
+}
+
+input PostCreate{
+	content: ContentInput!
 }
 
 type Query{

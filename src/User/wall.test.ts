@@ -25,11 +25,15 @@ it('Returns list of posts written by user with specified username', async () =>{
     const posts: Array<PostModel> = [
         {
             ...postMock(),
-            content: 'post-content-only-for-test',
+            content: {
+                content:'post-content-only-for-test'
+            },
         },
         {
             ...postMock(),
-            content: 'should-not-be-returned',
+            content: {
+                content: 'should-not-be-returned'
+            },
             username: 'different.user@email.com',
         }
     ];
@@ -40,5 +44,5 @@ it('Returns list of posts written by user with specified username', async () =>{
 
     expect(Array.of(response).length).toEqual(1);
     expect(response[0]?.username).toEqual(USERNAME);
-    expect(response[0]?.content).toEqual('post-content-only-for-test');
+    expect(response[0]?.content.content).toEqual('post-content-only-for-test');
 });

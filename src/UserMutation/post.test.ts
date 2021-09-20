@@ -26,7 +26,9 @@ it('Returns ID of a specified post', async () => {
     // return if of the new post
     const response = await postResolver({
         postCreate: {
-            content: 'post-content-only-for-test',
+            content: {
+                content: 'post-content-only-for-test'
+            },
         },
     });
 

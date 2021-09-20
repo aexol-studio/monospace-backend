@@ -6,7 +6,10 @@ const PHONE_NUMBER = '+48123456789';
 export const postMock = () => ({
     createdAt: new Date().toISOString(),
     username: USERNAME,
-    content: 'empty-content',
+    content: {
+        content: 'empty-content',
+        image: 'https://www.google.com/search?q=shrek&sxsrf=AOaemvIdDlg6EvhQuMIwXpG0H7nK_dNjQw:1632131574506&source=lnms&tbm=isch&sa=X&sqi=2&ved=2ahUKEwiP3eX1o43zAhUXrJUCHZmoCtwQ_AUoAXoECAEQAw&biw=1920&bih=939&dpr=1#imgrc=CijdXprtlnfa7M'
+    }
 });
 
 export const userMock = () => ({
@@ -16,7 +19,10 @@ export const userMock = () => ({
     wall: [
         {
             createdAt: new Date().toISOString(),
-            content: 'username-wall-content-array',
+            content: {
+                content: 'username-wall-content-array',
+                image: 'image-url'
+            }
         },
     ],
 });
