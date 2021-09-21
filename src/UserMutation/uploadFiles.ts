@@ -1,5 +1,6 @@
 import { FieldResolveInput } from 'stucco-js';
 import { resolverFor } from '../zeus';
+import { readFileSync, write } from 'fs';
 
 import AWS from 'aws-sdk';
 
@@ -27,14 +28,51 @@ const getS3links = async ({
     const params = {
       Bucket: process.env.SPACES_BUCKET,
     };
+    
     s3.createBucket(params, function (err, data) {
       if (err) {
         console.log('Bucket exists');
       }
+
+      const fileContent = readFileSync(name);
+      const expires = new Date(); expires.setSeconds(expires.getSeconds() + 1000);
+
+      s3.putObject({
+        Bucket: params.Bucket,
+        Key: name,
+        ContentType: type,
+        Body: fileContent,
+        Expires: expires,
+      }, (err, data) => {
+        if(err) throw new Error("Cannot upload file");
+      });
+
+       /**
+       * !!! IMPORTANT NOTE !!!
+       * 
+       * getSignedUrl method for putUrl var
+       * seems to not work properly as putObject method.
+       * getSignedUrl for putUrl never returns 
+       * proper URL. Looks like it has problem with 
+       * putting object into AWS bucket
+       * Code: SignatureDoesNotMatch
+       * 
+       * getSignedUrl for getUrl works properly 
+       * after using s3.putObject(). Returns URL to file in db.
+       * When using normal getSignedUrl after putUrl (s3.putObject not used)
+       * returns error URL like there is no file in db.
+       * Code: NoSuchKey
+       * 
+       * Currently I have no idea what is going on with putUrl.
+       * Maybe should use asynchoronous getSignedUrl(operation, params, callback)
+       * instead of synchronous getSignedUrl(operation, params) ?
+       */
+
       const putUrl = s3.getSignedUrl('putObject', {
         Bucket: params.Bucket,
         Key: name,
         ContentType: type,
+        Body: fileContent,
         Expires: 1000,
       });
       const getUrl = s3.getSignedUrl('getObject', {
