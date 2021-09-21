@@ -1,7 +1,4 @@
-type Content{
-	content: String
-	image: String
-}
+
 
 type Post implements Node{
 	"""
@@ -47,17 +44,13 @@ type UserMutation{
 		postCreate: PostCreate!
 	): String!
 	uploadFiles(
-		files: [File!]! = []
+		files: [FileInput!]! = []
 	): [UploadRequestResponse!]!
 }
 
-input ContentInput{
-	content: String!
-	image: String
-}
-
 input PostCreate{
-	content: ContentInput!
+	content: String!
+	files: [FileInput!]
 }
 
 type Query{
@@ -94,14 +87,26 @@ input OtpInput{
 	code: String!
 }
 
-input File{
+input FileInput{
 	name: String!
 	type: String!
+	getUrl: String!
 }
 
 type UploadRequestResponse{
 	getUrl: String!
 	putUrl: String!
+}
+
+type Content{
+	content: String!
+	files: [File!]
+}
+
+type File{
+	name: String!
+	type: String!
+	getUrl: String!
 }
 schema{
 	query: Query,

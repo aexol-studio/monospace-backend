@@ -5,10 +5,7 @@ type ZEUS_UNIONS = never
 export type ValueTypes = {
     ["Post"]: AliasType<{
 	/** Post content */
-	content?: {
-    content?:true,
-    image?: true
-  }
+	content?:ValueTypes["Content"],
 	/** Date it was created in DB */
 	createdAt?:true,
 		__typename?: true
@@ -33,14 +30,12 @@ export type ValueTypes = {
 }>;
 	["UserMutation"]: AliasType<{
 post?: [{	postCreate:ValueTypes["PostCreate"]},true],
-uploadFiles?: [{	files:ValueTypes["File"][]},ValueTypes["UploadRequestResponse"]],
+uploadFiles?: [{	files:ValueTypes["FileInput"][]},ValueTypes["UploadRequestResponse"]],
 		__typename?: true
 }>;
 	["PostCreate"]: {
-	content: {
-    content: string,
-    image?: string
-  }
+	content:string,
+	files?:ValueTypes["FileInput"][]
 };
 	["Query"]: AliasType<{
 getUserByUsername?: [{	userGet:ValueTypes["UserGet"]},ValueTypes["User"]],
@@ -65,13 +60,25 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 	phoneNumber:string,
 	code:string
 };
-	["File"]: {
+	["FileInput"]: {
 	name:string,
-	type:string
+	type:string,
+	getUrl:string
 };
 	["UploadRequestResponse"]: AliasType<{
 	getUrl?:true,
 	putUrl?:true,
+		__typename?: true
+}>;
+	["Content"]: AliasType<{
+	content?:true,
+	files?:ValueTypes["File"],
+		__typename?: true
+}>;
+	["File"]: AliasType<{
+	name?:true,
+	type?:true,
+	getUrl?:true,
 		__typename?: true
 }>
   }
@@ -79,10 +86,7 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 export type ModelTypes = {
     ["Post"]: {
 		/** Post content */
-	content?: {
-    content?: string,
-    image?: string
-  },
+	content?:ModelTypes["Content"],
 	/** Date it was created in DB */
 	createdAt:string
 };
@@ -115,10 +119,19 @@ export type ModelTypes = {
 	["UserGet"]: GraphQLTypes["UserGet"];
 	["LoginInput"]: GraphQLTypes["LoginInput"];
 	["OtpInput"]: GraphQLTypes["OtpInput"];
-	["File"]: GraphQLTypes["File"];
+	["FileInput"]: GraphQLTypes["FileInput"];
 	["UploadRequestResponse"]: {
 		getUrl:string,
 	putUrl:string
+};
+	["Content"]: {
+		content:string,
+	files?:ModelTypes["File"][]
+};
+	["File"]: {
+		name:string,
+	type:string,
+	getUrl:string
 }
     }
 
@@ -126,10 +139,7 @@ export type GraphQLTypes = {
     ["Post"]: {
 	__typename: "Post",
 	/** Post content */
-	content?:{
-    content?: string,
-    image?: string
-  },
+	content?: GraphQLTypes["Content"],
 	/** Date it was created in DB */
 	createdAt: string
 };
@@ -145,7 +155,7 @@ export type GraphQLTypes = {
 };
 	/** Node that all models should implement */
 ["Node"]: {
-	__typename:"Post" | "User"
+	__typename:"Post" | "User",
 	/** Date it was created in DB */
 	createdAt: string
 	['...on Post']: '__union' & GraphQLTypes["Post"];
@@ -157,10 +167,8 @@ export type GraphQLTypes = {
 	uploadFiles: Array<GraphQLTypes["UploadRequestResponse"]>
 };
 	["PostCreate"]: {
-		content: {
-      content: string,
-      image?: string
-    }
+		content: string,
+	files?: Array<GraphQLTypes["FileInput"]>
 };
 	["Query"]: {
 	__typename: "Query",
@@ -185,14 +193,26 @@ export type GraphQLTypes = {
 		phoneNumber: string,
 	code: string
 };
-	["File"]: {
+	["FileInput"]: {
 		name: string,
-	type: string
+	type: string,
+	getUrl: string
 };
 	["UploadRequestResponse"]: {
 	__typename: "UploadRequestResponse",
 	getUrl: string,
 	putUrl: string
+};
+	["Content"]: {
+	__typename: "Content",
+	content: string,
+	files?: Array<GraphQLTypes["File"]>
+};
+	["File"]: {
+	__typename: "File",
+	name: string,
+	type: string,
+	getUrl: string
 }
     }
 
@@ -237,30 +257,28 @@ type IsPayLoad<T> = T extends [any, infer PayLoad] ? PayLoad : T;
 type IsArray<T, U> = T extends Array<infer R> ? InputType<R, U>[] : InputType<T, U>;
 type FlattenArray<T> = T extends Array<infer R> ? R : T;
 
-type NotUnionTypes<SRC extends DeepAnify<DST>, DST> = {
-  [P in keyof DST]: SRC[P] extends '__union' & infer R ? never : P;
-}[keyof DST];
-
-type ExtractUnions<SRC extends DeepAnify<DST>, DST> = {
-  [P in keyof SRC]: SRC[P] extends '__union' & infer R
-    ? P extends keyof DST
-      ? IsArray<R, DST[P] & { __typename: true }>
-      : {}
-    : never;
-}[keyof SRC];
-
 type IsInterfaced<SRC extends DeepAnify<DST>, DST> = FlattenArray<SRC> extends ZEUS_INTERFACES | ZEUS_UNIONS
-  ? ExtractUnions<SRC, DST> &
+  ? {
+      [P in keyof SRC]: SRC[P] extends '__union' & infer R
+        ? P extends keyof DST
+          ? IsArray<R, DST[P] & { __typename: true }>
+          : {}
+        : never;
+    }[keyof DST] &
       {
-        [P in keyof Omit<Pick<SRC, NotUnionTypes<SRC, DST>>, '__typename'>]: DST[P] extends true
-          ? SRC[P]
-          : IsArray<SRC[P], DST[P]>;
+        [P in keyof Omit<
+          Pick<
+            SRC,
+            {
+              [P in keyof DST]: SRC[P] extends '__union' & infer R ? never : P;
+            }[keyof DST]
+          >,
+          '__typename'
+        >]: IsPayLoad<DST[P]> extends true ? SRC[P] : IsArray<SRC[P], DST[P]>;
       }
   : {
       [P in keyof Pick<SRC, keyof DST>]: IsPayLoad<DST[P]> extends true ? SRC[P] : IsArray<SRC[P], DST[P]>;
     };
-
-
 
 export type MapType<SRC, DST> = SRC extends DeepAnify<DST> ? IsInterfaced<SRC, DST> : never;
 export type InputType<SRC, DST> = IsPayLoad<DST> extends { __alias: infer R }
@@ -279,7 +297,7 @@ export type SubscriptionToGraphQL<V, T> = <Z extends V>(
 ) => {
   ws: WebSocket;
   on: (fn: (args: InputType<T, Z>) => void) => void;
-  off: (e: { data?: InputType<T, Z>; code?: number; reason?: string; message?: string }) => void;
+  off: (fn:(e: { data?: InputType<T, Z>; code?: number; reason?: string; message?: string }) => void) => void;
   error: (e: { data?: InputType<T, Z>; message?: string }) => void;
   open: () => void;
 };
@@ -465,9 +483,9 @@ const traverseToSeekArrays = (parent: string[], a?: any): string => {
     if (typeof a === 'object') {
       Object.keys(a)
         .filter((k) => typeof a[k] !== 'undefined')
-        .map((k) => {
+        .forEach((k) => {
         if (k === '__alias') {
-          Object.keys(a[k]).map((aliasKey) => {
+          Object.keys(a[k]).forEach((aliasKey) => {
             const aliasOperations = a[k][aliasKey];
             const aliasOperationName = Object.keys(aliasOperations)[0];
             const aliasOperation = aliasOperations[aliasOperationName];

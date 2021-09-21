@@ -10,7 +10,7 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		uploadFiles:{
 			files:{
-				type:"File",
+				type:"FileInput",
 				array:true,
 				arrayRequired:true,
 				required:true
@@ -18,19 +18,17 @@ export const AllTypesProps: Record<string,any> = {
 		}
 	},
 	PostCreate:{
-		content:{ 
-			content:{
-				type:"String",
-				array:false,
-				arrayRequired:false,
-				required:true
-			},
-			image: {
-				type:"String",
-				array:false,
-				arrayRequired:false,
-				required:false
-			}
+		content:{
+			type:"String",
+			array:false,
+			arrayRequired:false,
+			required:true
+		},
+		files:{
+			type:"FileInput",
+			array:true,
+			arrayRequired:false,
+			required:true
 		}
 	},
 	Query:{
@@ -97,7 +95,7 @@ export const AllTypesProps: Record<string,any> = {
 			required:true
 		}
 	},
-	File:{
+	FileInput:{
 		name:{
 			type:"String",
 			array:false,
@@ -109,16 +107,19 @@ export const AllTypesProps: Record<string,any> = {
 			array:false,
 			arrayRequired:false,
 			required:true
+		},
+		getUrl:{
+			type:"String",
+			array:false,
+			arrayRequired:false,
+			required:true
 		}
 	}
 }
 
 export const ReturnTypes: Record<string,any> = {
 	Post:{
-		content: {
-			content: "String",
-			image: "String"
-		},
+		content:"Content",
 		createdAt:"String"
 	},
 	User:{
@@ -132,7 +133,7 @@ export const ReturnTypes: Record<string,any> = {
 		createdAt:"String"
 	},
 	UserMutation:{
-		post:"Post",
+		post:"String",
 		uploadFiles:"UploadRequestResponse"
 	},
 	Query:{
@@ -147,5 +148,14 @@ export const ReturnTypes: Record<string,any> = {
 	UploadRequestResponse:{
 		getUrl:"String",
 		putUrl:"String"
+	},
+	Content:{
+		content:"String",
+		files:"File"
+	},
+	File:{
+		name:"String",
+		type:"String",
+		getUrl:"String"
 	}
 }
