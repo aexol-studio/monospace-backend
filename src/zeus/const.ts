@@ -25,7 +25,7 @@ export const AllTypesProps: Record<string,any> = {
 			required:true
 		},
 		files:{
-			type:"FileInput",
+			type:"FilePost",
 			array:true,
 			arrayRequired:false,
 			required:true
@@ -107,7 +107,9 @@ export const AllTypesProps: Record<string,any> = {
 			array:false,
 			arrayRequired:false,
 			required:true
-		},
+		}
+	},
+	FilePost:{
 		getUrl:{
 			type:"String",
 			array:false,
@@ -125,7 +127,8 @@ export const ReturnTypes: Record<string,any> = {
 	User:{
 		wall:"Post",
 		createdAt:"String",
-		username:"String"
+		username:"String",
+		uploadFiles:"File"
 	},
 	Node:{
 		"...on Post": "Post",
@@ -154,8 +157,6 @@ export const ReturnTypes: Record<string,any> = {
 		files:"File"
 	},
 	File:{
-		name:"String",
-		type:"String",
 		getUrl:"String"
 	}
 }

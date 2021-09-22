@@ -4,7 +4,7 @@ type Post implements Node{
 	"""
 	Post content
 	"""
-	content: Content
+	content: Content!
 	"""
 	Date it was created in DB
 	"""
@@ -27,6 +27,7 @@ type User implements Node{
 	Unique username that will be also a part of link for example https://username.imono.space
 	"""
 	username: String!
+	uploadFiles: [File!]
 }
 
 """
@@ -50,7 +51,7 @@ type UserMutation{
 
 input PostCreate{
 	content: String!
-	files: [FileInput!]
+	files: [FilePost!]
 }
 
 type Query{
@@ -90,6 +91,9 @@ input OtpInput{
 input FileInput{
 	name: String!
 	type: String!
+}
+
+input FilePost{
 	getUrl: String!
 }
 
@@ -104,8 +108,6 @@ type Content{
 }
 
 type File{
-	name: String!
-	type: String!
 	getUrl: String!
 }
 schema{

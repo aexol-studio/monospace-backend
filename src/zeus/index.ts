@@ -18,6 +18,7 @@ export type ValueTypes = {
 	createdAt?:true,
 	/** Unique username that will be also a part of link for example https://username.imono.space */
 	username?:true,
+	uploadFiles?:ValueTypes["File"],
 		__typename?: true
 }>;
 	/** Node that all models should implement */
@@ -35,7 +36,7 @@ uploadFiles?: [{	files:ValueTypes["FileInput"][]},ValueTypes["UploadRequestRespo
 }>;
 	["PostCreate"]: {
 	content:string,
-	files?:ValueTypes["FileInput"][]
+	files?:ValueTypes["FilePost"][]
 };
 	["Query"]: AliasType<{
 getUserByUsername?: [{	userGet:ValueTypes["UserGet"]},ValueTypes["User"]],
@@ -62,7 +63,9 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 };
 	["FileInput"]: {
 	name:string,
-	type:string,
+	type:string
+};
+	["FilePost"]: {
 	getUrl:string
 };
 	["UploadRequestResponse"]: AliasType<{
@@ -76,8 +79,6 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 		__typename?: true
 }>;
 	["File"]: AliasType<{
-	name?:true,
-	type?:true,
 	getUrl?:true,
 		__typename?: true
 }>
@@ -86,7 +87,7 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 export type ModelTypes = {
     ["Post"]: {
 		/** Post content */
-	content?:ModelTypes["Content"],
+	content:ModelTypes["Content"],
 	/** Date it was created in DB */
 	createdAt:string
 };
@@ -97,7 +98,8 @@ export type ModelTypes = {
 	/** Date it was created in DB */
 	createdAt:string,
 	/** Unique username that will be also a part of link for example https://username.imono.space */
-	username:string
+	username:string,
+	uploadFiles?:ModelTypes["File"][]
 };
 	/** Node that all models should implement */
 ["Node"]: ModelTypes["Post"] | ModelTypes["User"];
@@ -120,6 +122,7 @@ export type ModelTypes = {
 	["LoginInput"]: GraphQLTypes["LoginInput"];
 	["OtpInput"]: GraphQLTypes["OtpInput"];
 	["FileInput"]: GraphQLTypes["FileInput"];
+	["FilePost"]: GraphQLTypes["FilePost"];
 	["UploadRequestResponse"]: {
 		getUrl:string,
 	putUrl:string
@@ -129,9 +132,7 @@ export type ModelTypes = {
 	files?:ModelTypes["File"][]
 };
 	["File"]: {
-		name:string,
-	type:string,
-	getUrl:string
+		getUrl:string
 }
     }
 
@@ -139,7 +140,7 @@ export type GraphQLTypes = {
     ["Post"]: {
 	__typename: "Post",
 	/** Post content */
-	content?: GraphQLTypes["Content"],
+	content: GraphQLTypes["Content"],
 	/** Date it was created in DB */
 	createdAt: string
 };
@@ -151,7 +152,8 @@ export type GraphQLTypes = {
 	/** Date it was created in DB */
 	createdAt: string,
 	/** Unique username that will be also a part of link for example https://username.imono.space */
-	username: string
+	username: string,
+	uploadFiles?: Array<GraphQLTypes["File"]>
 };
 	/** Node that all models should implement */
 ["Node"]: {
@@ -168,7 +170,7 @@ export type GraphQLTypes = {
 };
 	["PostCreate"]: {
 		content: string,
-	files?: Array<GraphQLTypes["FileInput"]>
+	files?: Array<GraphQLTypes["FilePost"]>
 };
 	["Query"]: {
 	__typename: "Query",
@@ -195,8 +197,10 @@ export type GraphQLTypes = {
 };
 	["FileInput"]: {
 		name: string,
-	type: string,
-	getUrl: string
+	type: string
+};
+	["FilePost"]: {
+		getUrl: string
 };
 	["UploadRequestResponse"]: {
 	__typename: "UploadRequestResponse",
@@ -210,8 +214,6 @@ export type GraphQLTypes = {
 };
 	["File"]: {
 	__typename: "File",
-	name: string,
-	type: string,
 	getUrl: string
 }
     }

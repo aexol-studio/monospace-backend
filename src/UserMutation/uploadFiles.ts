@@ -1,8 +1,8 @@
 import { FieldResolveInput } from 'stucco-js';
 import { resolverFor } from '../zeus';
-import { readFileSync, write } from 'fs';
-
 import AWS from 'aws-sdk';
+import { UserModel } from '../models/UserModel';
+import { mc } from '../db';
 
 const spacesEndpoint = new AWS.Endpoint(`${process.env.SPACES_REGION}.digitaloceanspaces.com`);
 const s3 = new AWS.S3({
@@ -34,58 +34,51 @@ const getS3links = async ({
         console.log('Bucket exists');
       }
 
-      const fileContent = readFileSync(name);
-      const expires = new Date(); expires.setSeconds(expires.getSeconds() + 1000);
-
-      s3.putObject({
-        Bucket: params.Bucket,
-        Key: name,
-        ContentType: type,
-        Body: fileContent,
-        Expires: expires,
-      }, (err, data) => {
-        if(err) throw new Error("Cannot upload file");
-      });
-
-       /**
-       * !!! IMPORTANT NOTE !!!
-       * 
-       * getSignedUrl method for putUrl var
-       * seems to not work properly as putObject method.
-       * getSignedUrl for putUrl never returns 
-       * proper URL. Looks like it has problem with 
-       * putting object into AWS bucket
-       * Code: SignatureDoesNotMatch
-       * 
-       * getSignedUrl for getUrl works properly 
-       * after using s3.putObject(). Returns URL to file in db.
-       * When using normal getSignedUrl after putUrl (s3.putObject not used)
-       * returns error URL like there is no file in db.
-       * Code: NoSuchKey
-       * 
-       * Currently I have no idea what is going on with putUrl.
-       * Maybe should use asynchoronous getSignedUrl(operation, params, callback)
-       * instead of synchronous getSignedUrl(operation, params) ?
-       */
-
       const putUrl = s3.getSignedUrl('putObject', {
         Bucket: params.Bucket,
         Key: name,
         ContentType: type,
-        Body: fileContent,
         Expires: 1000,
+        ACL: 'public-read-write',
       });
+
       const getUrl = s3.getSignedUrl('getObject', {
         Bucket: params.Bucket,
         Key: name,
+        // should never expired?
+        // for example expires in 100 years
         Expires: 1000,
       });
 
+      /** 
+       * current: getUrl = https://BUCKET.REGION.digitaloceanspaces.com/filename?AWSAccessKeyId=(...)&Expires=(...)&Signature=(...)
+       * 
+       * TODO: getUrl = https://BUCKET.REGION.digitaloceanspaces.com/username/filename 
+       */  
       resolve({ putUrl, getUrl });
     });
   });
 
 export const handler = async (input: FieldResolveInput) =>
-  resolverFor('UserMutation', 'uploadFiles', async (args) => {
+  resolverFor('UserMutation', 'uploadFiles', async (args, source: UserModel) => {
+    /**
+     * response contains getUrls for every file uploaded to s3
+     * I want to push them to source user
+     */
+    const response = (await Promise.all(args.files.map((params) => getS3links(params)))).map((c) => c.getUrl as unknown as { getUrl: string });
+   
+    const { db } = await mc();
+
+    // Wydaje mi sie ze troche tutaj namieszalem i na dzisiejszym (22.09) callu chodzilo o cos innego
+    // TODO: fix
+    await db.collection<UserModel>('User').updateOne(
+      { username: source.username },
+      {
+        $set: {
+          uploadFiles: response
+        }
+      },
+    );
+
     return Promise.all(args.files.map(getS3links));
-  })(input.arguments);
+  })(input.arguments, input.source);

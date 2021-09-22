@@ -3,32 +3,34 @@ import { mc } from '../db';
 import { PostModel } from '../models/PostModel';
 import { UserModel } from '../models/UserModel';
 import { resolverFor } from '../zeus';
-import { handler as uploader } from './uploadFiles';
+
 
 export const handler = async (input: FieldResolveInput) =>
   resolverFor('UserMutation', 'post', async (args, source: UserModel) => {
+    /**
+     * Args should contain only post content or
+     * post content and files url?
+     * 
+     * Then if only post content i want to send
+     * files url via source user so i have to
+     * create new field uploadedFiles which are
+     * send to source when user uploades them via 
+     * uploadFiles handler
+     */
+
     const { db } = await mc();
-    if (args.postCreate.files !== undefined) {
-      const id = await db.collection<PostModel>('Post').insertOne({
-        createdAt: new Date().toISOString(),
-        username: source.username,
-        content: {
-          content: args.postCreate.content,
-          files: [
-            ...args.postCreate.files
-          ]
-        }
-      });
-      return id.insertedId.toHexString();
-    } 
-    else {
-      const id = await db.collection<PostModel>('Post').insertOne({
-        createdAt: new Date().toISOString(),
-        username: source.username,
-        content: {
-          content: args.postCreate.content,
-        },
-      });
-      return id.insertedId.toHexString();
-    }
+    const id = await db.collection<PostModel>('Post').insertOne({
+      createdAt: new Date().toISOString(),
+      username: source.username,
+      content: {
+        content: args.postCreate.content,
+        /**
+         * Files to new post should be inserted from source
+         * atfter user uploads them to s3
+         */
+        files: source.uploadFiles
+      },
+    });
+    return id.insertedId.toHexString();
+  
 })(input.arguments, input.source);
