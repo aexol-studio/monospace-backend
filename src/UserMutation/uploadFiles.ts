@@ -70,8 +70,15 @@ export const handler = async (input: FieldResolveInput) =>
     const { db } = await mc();
 
     // Wydaje mi sie ze troche tutaj namieszalem i na dzisiejszym (22.09) callu chodzilo o cos innego
-    // TODO: fix
-    await db.collection<UserModel>('User').updateOne(
+
+    /**
+     * !!! Update do poprzedniego commita!!!
+     * 
+     * Wczesniej szukalem na kolekcji 'User' nie 'UserCol' XDDDD 
+     * glupi blad ktory dlugo szukalem
+     * dlatego nie wiedzialem co nie dziala
+     */
+    await db.collection<UserModel>('UserCol').updateOne(
       { username: source.username },
       {
         $set: {

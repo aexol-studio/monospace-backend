@@ -18,6 +18,18 @@ export const handler = async (input: FieldResolveInput) =>
      * uploadFiles handler
      */
 
+    /**
+     * !!! Update do poprzedniego commita !!!
+     * 
+     * Teraz url'e do plikow dodawane sa do bazy
+     * z sourca, pliki ktore uploadowal user
+     * Chyba moze pojawic sie taki blad, ze wgrane pliki nie sa nullowane
+     * wiec do posta beda dodawac sie te z poprzednich postwo.
+     * Ogolnie po testowaniu tego do nbazy dodaje ssie tylko nowy plik/pliki
+     * a nie wszystkie bo w uploadzie updatuje tego usera, wiec w sumie nie 
+     * powinno byc bledow 
+     */
+
     const { db } = await mc();
     const id = await db.collection<PostModel>('Post').insertOne({
       createdAt: new Date().toISOString(),
