@@ -61,31 +61,19 @@ const getS3links = async ({
 
 export const handler = async (input: FieldResolveInput) =>
   resolverFor('UserMutation', 'uploadFiles', async (args, source: UserModel) => {
-    /**
-     * response contains getUrls for every file uploaded to s3
-     * I want to push them to source user
-     */
-    const response = (await Promise.all(args.files.map((params) => getS3links(params)))).map((c) => c.getUrl as unknown as { getUrl: string });
-   
+    
+    const urls = Promise.all(args.files.map(getS3links));
+    const getUrls = (await urls).map((c) => c.getUrl).map((url) => ({getUrl: url}));
+
     const { db } = await mc();
-
-    // Wydaje mi sie ze troche tutaj namieszalem i na dzisiejszym (22.09) callu chodzilo o cos innego
-
-    /**
-     * !!! Update do poprzedniego commita!!!
-     * 
-     * Wczesniej szukalem na kolekcji 'User' nie 'UserCol' XDDDD 
-     * glupi blad ktory dlugo szukalem
-     * dlatego nie wiedzialem co nie dziala
-     */
     await db.collection<UserModel>('UserCol').updateOne(
       { username: source.username },
       {
         $set: {
-          uploadFiles: response
+          uploadedFiles: getUrls,
         }
       },
     );
 
-    return Promise.all(args.files.map(getS3links));
+    return urls;
   })(input.arguments, input.source);

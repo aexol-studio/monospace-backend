@@ -27,7 +27,10 @@ type User implements Node{
 	Unique username that will be also a part of link for example https://username.imono.space
 	"""
 	username: String!
-	uploadFiles: [File!]
+	"""
+	Files user uploaded to s3
+	"""
+	uploadedFiles: [File!]
 }
 
 """
@@ -51,7 +54,6 @@ type UserMutation{
 
 input PostCreate{
 	content: String!
-	files: [FilePost!]
 }
 
 type Query{
@@ -91,10 +93,6 @@ input OtpInput{
 input FileInput{
 	name: String!
 	type: String!
-}
-
-input FilePost{
-	getUrl: String!
 }
 
 type UploadRequestResponse{

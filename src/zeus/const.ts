@@ -23,12 +23,6 @@ export const AllTypesProps: Record<string,any> = {
 			array:false,
 			arrayRequired:false,
 			required:true
-		},
-		files:{
-			type:"FilePost",
-			array:true,
-			arrayRequired:false,
-			required:true
 		}
 	},
 	Query:{
@@ -108,14 +102,6 @@ export const AllTypesProps: Record<string,any> = {
 			arrayRequired:false,
 			required:true
 		}
-	},
-	FilePost:{
-		getUrl:{
-			type:"String",
-			array:false,
-			arrayRequired:false,
-			required:true
-		}
 	}
 }
 
@@ -128,7 +114,7 @@ export const ReturnTypes: Record<string,any> = {
 		wall:"Post",
 		createdAt:"String",
 		username:"String",
-		uploadFiles:"File"
+		uploadedFiles:"File"
 	},
 	Node:{
 		"...on Post": "Post",

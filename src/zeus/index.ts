@@ -18,7 +18,8 @@ export type ValueTypes = {
 	createdAt?:true,
 	/** Unique username that will be also a part of link for example https://username.imono.space */
 	username?:true,
-	uploadFiles?:ValueTypes["File"],
+	/** Files user uploaded to s3 */
+	uploadedFiles?:ValueTypes["File"],
 		__typename?: true
 }>;
 	/** Node that all models should implement */
@@ -35,8 +36,7 @@ uploadFiles?: [{	files:ValueTypes["FileInput"][]},ValueTypes["UploadRequestRespo
 		__typename?: true
 }>;
 	["PostCreate"]: {
-	content:string,
-	files?:ValueTypes["FilePost"][]
+	content:string
 };
 	["Query"]: AliasType<{
 getUserByUsername?: [{	userGet:ValueTypes["UserGet"]},ValueTypes["User"]],
@@ -64,9 +64,6 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 	["FileInput"]: {
 	name:string,
 	type:string
-};
-	["FilePost"]: {
-	getUrl:string
 };
 	["UploadRequestResponse"]: AliasType<{
 	getUrl?:true,
@@ -99,7 +96,8 @@ export type ModelTypes = {
 	createdAt:string,
 	/** Unique username that will be also a part of link for example https://username.imono.space */
 	username:string,
-	uploadFiles?:ModelTypes["File"][]
+	/** Files user uploaded to s3 */
+	uploadedFiles?:ModelTypes["File"][]
 };
 	/** Node that all models should implement */
 ["Node"]: ModelTypes["Post"] | ModelTypes["User"];
@@ -122,7 +120,6 @@ export type ModelTypes = {
 	["LoginInput"]: GraphQLTypes["LoginInput"];
 	["OtpInput"]: GraphQLTypes["OtpInput"];
 	["FileInput"]: GraphQLTypes["FileInput"];
-	["FilePost"]: GraphQLTypes["FilePost"];
 	["UploadRequestResponse"]: {
 		getUrl:string,
 	putUrl:string
@@ -153,7 +150,8 @@ export type GraphQLTypes = {
 	createdAt: string,
 	/** Unique username that will be also a part of link for example https://username.imono.space */
 	username: string,
-	uploadFiles?: Array<GraphQLTypes["File"]>
+	/** Files user uploaded to s3 */
+	uploadedFiles?: Array<GraphQLTypes["File"]>
 };
 	/** Node that all models should implement */
 ["Node"]: {
@@ -169,8 +167,7 @@ export type GraphQLTypes = {
 	uploadFiles: Array<GraphQLTypes["UploadRequestResponse"]>
 };
 	["PostCreate"]: {
-		content: string,
-	files?: Array<GraphQLTypes["FilePost"]>
+		content: string
 };
 	["Query"]: {
 	__typename: "Query",
@@ -198,9 +195,6 @@ export type GraphQLTypes = {
 	["FileInput"]: {
 		name: string,
 	type: string
-};
-	["FilePost"]: {
-		getUrl: string
 };
 	["UploadRequestResponse"]: {
 	__typename: "UploadRequestResponse",
