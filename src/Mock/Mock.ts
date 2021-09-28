@@ -1,3 +1,4 @@
+import { PostModel } from "../models/PostModel";
 import { UserModel } from "../models/UserModel";
 
 const USERNAME = 'user@aexol.com';
@@ -8,8 +9,8 @@ export const postMock = () => ({
     username: USERNAME,
     content: {
         content: 'empty-content',
-        image: 'https://www.google.com/search?q=shrek&sxsrf=AOaemvIdDlg6EvhQuMIwXpG0H7nK_dNjQw:1632131574506&source=lnms&tbm=isch&sa=X&sqi=2&ved=2ahUKEwiP3eX1o43zAhUXrJUCHZmoCtwQ_AUoAXoECAEQAw&biw=1920&bih=939&dpr=1#imgrc=CijdXprtlnfa7M'
-    }
+        files: [],
+    },
 });
 
 export const userMock = () => ({
@@ -21,10 +22,11 @@ export const userMock = () => ({
             createdAt: new Date().toISOString(),
             content: {
                 content: 'username-wall-content-array',
-                image: 'image-url'
-            }
+                files: [],
+            },
         },
     ],
+    uploadedFiles: [],
 });
 
 export function generatePhoneNumber(): string {
