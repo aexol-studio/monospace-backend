@@ -37,6 +37,12 @@ export const AllTypesProps: Record<string,any> = {
 			array:false,
 			arrayRequired:false,
 			required:true
+		},
+		type:{
+			type:"String",
+			array:false,
+			arrayRequired:false,
+			required:true
 		}
 	},
 	Query:{
@@ -156,6 +162,7 @@ export const ReturnTypes: Record<string,any> = {
 		files:"File"
 	},
 	File:{
-		getUrl:"String"
+		getUrl:"String",
+		type:"String"
 	}
 }

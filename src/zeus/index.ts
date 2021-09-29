@@ -38,7 +38,8 @@ uploadFiles?: [{	files:ValueTypes["FileInput"][]},ValueTypes["UploadRequestRespo
 	files?:ValueTypes["FilePostInput"][]
 };
 	["FilePostInput"]: {
-	getUrl:string
+	getUrl:string,
+	type:string
 };
 	["Query"]: AliasType<{
 getUserByUsername?: [{	userGet:ValueTypes["UserGet"]},ValueTypes["User"]],
@@ -79,6 +80,7 @@ validate?: [{	otpInput:ValueTypes["OtpInput"]},true],
 }>;
 	["File"]: AliasType<{
 	getUrl?:true,
+	type?:true,
 		__typename?: true
 }>
   }
@@ -130,7 +132,8 @@ export type ModelTypes = {
 	files?:ModelTypes["File"][]
 };
 	["File"]: {
-		getUrl:string
+		getUrl:string,
+	type:string
 }
     }
 
@@ -170,7 +173,8 @@ export type GraphQLTypes = {
 	files?: Array<GraphQLTypes["FilePostInput"]>
 };
 	["FilePostInput"]: {
-		getUrl: string
+		getUrl: string,
+	type: string
 };
 	["Query"]: {
 	__typename: "Query",
@@ -211,7 +215,8 @@ export type GraphQLTypes = {
 };
 	["File"]: {
 	__typename: "File",
-	getUrl: string
+	getUrl: string,
+	type: string
 }
     }
 
