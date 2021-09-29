@@ -14,26 +14,10 @@ export const handler = async (input: FieldResolveInput) =>
       username: source.username,
       content: {
         content: args.postCreate.content,
-        /**
-         * Files to new post should be inserted from source
-         * atfter user uploads them to s3
-         */
-        files: source.uploadedFiles
+        files: args.postCreate.files,
       },
     });
 
-    /** 
-     * delete uploaded files since they are useless now
-     * and will be added to next post which shouldnt contain files
-     */
-    await db.collection<UserModel>('UserCol').updateOne(
-      {username: source.username},
-      {
-        $set: {
-          uploadedFiles: []
-        }
-      }
-    )
     return id.insertedId.toHexString();
   
 })(input.arguments, input.source);

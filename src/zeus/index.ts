@@ -18,8 +18,6 @@ export type ValueTypes = {
 	createdAt?:true,
 	/** Unique username that will be also a part of link for example https://username.imono.space */
 	username?:true,
-	/** Files user uploaded to s3 */
-	uploadedFiles?:ValueTypes["File"],
 		__typename?: true
 }>;
 	/** Node that all models should implement */
@@ -36,7 +34,11 @@ uploadFiles?: [{	files:ValueTypes["FileInput"][]},ValueTypes["UploadRequestRespo
 		__typename?: true
 }>;
 	["PostCreate"]: {
-	content:string
+	content:string,
+	files?:ValueTypes["FilePostInput"][]
+};
+	["FilePostInput"]: {
+	getUrl:string
 };
 	["Query"]: AliasType<{
 getUserByUsername?: [{	userGet:ValueTypes["UserGet"]},ValueTypes["User"]],
@@ -95,9 +97,7 @@ export type ModelTypes = {
 	/** Date it was created in DB */
 	createdAt:string,
 	/** Unique username that will be also a part of link for example https://username.imono.space */
-	username:string,
-	/** Files user uploaded to s3 */
-	uploadedFiles?:ModelTypes["File"][]
+	username:string
 };
 	/** Node that all models should implement */
 ["Node"]: ModelTypes["Post"] | ModelTypes["User"];
@@ -106,6 +106,7 @@ export type ModelTypes = {
 	uploadFiles:ModelTypes["UploadRequestResponse"][]
 };
 	["PostCreate"]: GraphQLTypes["PostCreate"];
+	["FilePostInput"]: GraphQLTypes["FilePostInput"];
 	["Query"]: {
 		getUserByUsername?:ModelTypes["User"],
 	me:ModelTypes["User"]
@@ -149,9 +150,7 @@ export type GraphQLTypes = {
 	/** Date it was created in DB */
 	createdAt: string,
 	/** Unique username that will be also a part of link for example https://username.imono.space */
-	username: string,
-	/** Files user uploaded to s3 */
-	uploadedFiles?: Array<GraphQLTypes["File"]>
+	username: string
 };
 	/** Node that all models should implement */
 ["Node"]: {
@@ -167,7 +166,11 @@ export type GraphQLTypes = {
 	uploadFiles: Array<GraphQLTypes["UploadRequestResponse"]>
 };
 	["PostCreate"]: {
-		content: string
+		content: string,
+	files?: Array<GraphQLTypes["FilePostInput"]>
+};
+	["FilePostInput"]: {
+		getUrl: string
 };
 	["Query"]: {
 	__typename: "Query",

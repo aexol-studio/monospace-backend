@@ -26,7 +26,6 @@ export const userMock = () => ({
             },
         },
     ],
-    uploadedFiles: [],
 });
 
 export function generatePhoneNumber(): string {

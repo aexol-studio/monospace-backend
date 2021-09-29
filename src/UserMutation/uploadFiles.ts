@@ -1,8 +1,6 @@
 import { FieldResolveInput } from 'stucco-js';
 import { resolverFor } from '../zeus';
 import AWS from 'aws-sdk';
-import { UserModel } from '../models/UserModel';
-import { mc } from '../db';
 
 const spacesEndpoint = new AWS.Endpoint(`${process.env.SPACES_REGION}.digitaloceanspaces.com`);
 const s3 = new AWS.S3({
@@ -34,46 +32,29 @@ const getS3links = async ({
         console.log('Bucket exists');
       }
 
+      const expires = 24 * 60 * 60; // 24h
+
       const putUrl = s3.getSignedUrl('putObject', {
         Bucket: params.Bucket,
         Key: name,
         ContentType: type,
-        Expires: 1000,
+        Expires: expires,
         ACL: 'public-read-write',
       });
 
       const getUrl = s3.getSignedUrl('getObject', {
         Bucket: params.Bucket,
         Key: name,
-        // should never expired?
-        // for example expires in 100 years
-        Expires: 1000,
+        Expires: expires,
       });
 
-      /** 
-       * current: getUrl = https://BUCKET.REGION.digitaloceanspaces.com/filename?AWSAccessKeyId=(...)&Expires=(...)&Signature=(...)
-       * 
-       * TODO: getUrl = https://BUCKET.REGION.digitaloceanspaces.com/username/filename 
-       */  
       resolve({ putUrl, getUrl });
     });
   });
 
 export const handler = async (input: FieldResolveInput) =>
-  resolverFor('UserMutation', 'uploadFiles', async (args, source: UserModel) => {
-    
-    const urls = Promise.all(args.files.map(getS3links));
-    const getUrls = (await urls).map((c) => c.getUrl).map((url) => ({getUrl: url}));
+  resolverFor('UserMutation', 'uploadFiles', async (args) => {
 
-    const { db } = await mc();
-    await db.collection<UserModel>('UserCol').updateOne(
-      { username: source.username },
-      {
-        $set: {
-          uploadedFiles: getUrls,
-        }
-      },
-    );
+    return Promise.all(args.files.map(getS3links));
 
-    return urls;
-  })(input.arguments, input.source);
+  })(input.arguments);
