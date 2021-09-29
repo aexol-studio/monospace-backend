@@ -4,7 +4,7 @@ type Post implements Node{
 	"""
 	Post content
 	"""
-	content: String
+	content: Content!
 	"""
 	Date it was created in DB
 	"""
@@ -44,13 +44,19 @@ type UserMutation{
 		postCreate: PostCreate!
 	): String!
 	uploadFiles(
-		files: [File!]! = []
+		files: [FileInput!]! = []
 	): [UploadRequestResponse!]!
 }
 
 input PostCreate{
 	content: String!
+	files: [FilePostInput!]
 }
+
+input FilePostInput{
+	getUrl: String!
+	type: String!
+} 
 
 type Query{
 	getUserByUsername(
@@ -86,7 +92,7 @@ input OtpInput{
 	code: String!
 }
 
-input File{
+input FileInput{
 	name: String!
 	type: String!
 }
@@ -94,6 +100,16 @@ input File{
 type UploadRequestResponse{
 	getUrl: String!
 	putUrl: String!
+}
+
+type Content{
+	content: String!
+	files: [File!]
+}
+
+type File{
+	getUrl: String!
+	type: String!
 }
 schema{
 	query: Query,

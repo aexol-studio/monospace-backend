@@ -9,11 +9,13 @@
     "watch": "tsc --watch",
     "test-cli": "dotenv -e .env -- node ../../lib/index.js",
     "cli": "gecli",
-    "update": "gecli models && gecli schema && gecli typings"
+    "update": "gecli models && gecli schema && gecli typings",
+    "test": "dotenv -e .env.test -- bash -c 'jest --detectOpenHandles'"
   },
   "author": "GraphQL Editor Centaur Generator",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^27.0.1",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/mongodb": "^4.0.7",
     "@types/node": "^12.6.9",
@@ -26,7 +28,9 @@
     "eslint-plugin-prettier": "^3.1.1",
     "graphql-editor-cli": "^0.1.8",
     "graphql-zeus": "latest",
+    "jest": "^27.2.0",
     "prettier": "latest",
+    "ts-jest": "^27.0.5",
     "ts-node": "latest",
     "typescript": "latest"
   },

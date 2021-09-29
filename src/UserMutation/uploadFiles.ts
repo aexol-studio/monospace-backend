@@ -1,6 +1,5 @@
 import { FieldResolveInput } from 'stucco-js';
 import { resolverFor } from '../zeus';
-
 import AWS from 'aws-sdk';
 
 const spacesEndpoint = new AWS.Endpoint(`${process.env.SPACES_REGION}.digitaloceanspaces.com`);
@@ -27,20 +26,26 @@ const getS3links = async ({
     const params = {
       Bucket: process.env.SPACES_BUCKET,
     };
+    
     s3.createBucket(params, function (err, data) {
       if (err) {
         console.log('Bucket exists');
       }
+
+      const expires = 24 * 60 * 60; // 24h
+
       const putUrl = s3.getSignedUrl('putObject', {
         Bucket: params.Bucket,
         Key: name,
         ContentType: type,
-        Expires: 1000,
+        Expires: expires,
+        ACL: 'public-read-write',
       });
+
       const getUrl = s3.getSignedUrl('getObject', {
         Bucket: params.Bucket,
         Key: name,
-        Expires: 1000,
+        Expires: expires,
       });
 
       resolve({ putUrl, getUrl });
@@ -49,5 +54,7 @@ const getS3links = async ({
 
 export const handler = async (input: FieldResolveInput) =>
   resolverFor('UserMutation', 'uploadFiles', async (args) => {
+
     return Promise.all(args.files.map(getS3links));
+
   })(input.arguments);

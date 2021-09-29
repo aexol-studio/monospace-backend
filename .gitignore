@@ -4,3 +4,4 @@
 .graphql-editor-auth.json
 dist
 .deploy.sh
+.env.test
