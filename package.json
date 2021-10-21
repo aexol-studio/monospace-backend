@@ -39,7 +39,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.1.1",
     "node-fetch": "^2.6.0",
-    "stucco-js": "latest",
+    "stucco-js": "0.9.7",
     "twilio": "^3.67.1"
   }
 }
